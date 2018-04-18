@@ -352,7 +352,8 @@ int main()
 	vector<vector<int> > matrix ({1,1,0,0,0},
 				     {0,1,0,0,1},
 				     {1,0,0,1,1},
-				     {0,0,0,0,0},					  				   {1,0,1,0,1});
+				     {0,0,0,0,0},					  				   
+				     {1,0,1,0,1});
 	return 0;
 	cout << "The number of islands is " << countIslands(matrix) <<endl;
 }
