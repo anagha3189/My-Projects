@@ -1,34 +1,65 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-/*
 int average;
-
 int size = 0;
 
-
 void *calcAvg(void *arg);
-int main(int argc, char *argv[]){
-  //initialize an array of the integers to be passed 
-  int *nums = (int*)malloc((argc - 1)*sizeof(int));
-  int i = 1;
-  for(i = 1; i < argc ; i++){
-    nums[i-1] = atoi(argv[i]);
+int numbers[] = {0,1,2,3,4,5,6,7};
+
+pthread_mutex_t count_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
+void *print_even();
+void *print_odd();
+int count = 0;
+
+// This is useful when the elements are not provided via array
+#define COUNT_DONE 200
+
+
+int main(int argc, char *argv[])
+{
+  if(argc < 1)
+	exit(0);
+
+  //initialize an array of the integers to be passed
+  int numSize = atoi(argv[1]); 
+  srand(time(NULL));
+  int *nums = (int*)malloc((numSize - 1)*sizeof(int));
+  int i ;
+  for(i = 0; i < numSize ; i++)
+  {
+    nums[i] = (rand() % 100) + i ;
+    printf("%d   " , nums[i]);
     size++;
   }
-
+  printf("\n");
   //Thread Identifier 
-  pthread_t avgThread;
+  //pthread_t avgThread;
+  //pthread_create(&avgThread, NULL, calcAvg, (void*)nums);
+  pthread_t even_thread;
+  pthread_t odd_thread;
+  pthread_create(&even_thread, NULL, print_even , (void*)nums);
+  pthread_create(&odd_thread, NULL, print_odd, (void*)nums);
 
-  pthread_create(&avgThread, NULL, calcAvg, (void*)nums);
-
-  pthread_join(avgThread, NULL);
-  printf("average = %d \n",average);
+  //pthread_join(avgThread, NULL);
+  //printf("average = %d \n",average);
+  pthread_join(even_thread, NULL); 
+  pthread_join(odd_thread, NULL);
+  pthread_mutex_destroy(&count_mutex);
+  pthread_cond_destroy(&condition_var);
   free(nums);
 
+  return 0;
+
 }
-void *calcAvg(void *arg){
+
+
+
+void *calcAvg(void *arg)
+{
   int *val_p = (int *) arg;
   int sum = 0;
   int i = 0;
@@ -37,63 +68,50 @@ void *calcAvg(void *arg){
   }
   average = sum / (size);
   pthread_exit(0);
-} */
+} 
 
-
-pthread_mutex_t count_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
-void *functionCount1();
-void *functionCount2();
-int count = 0;
-#define COUNT_DONE 200
-
-void main()
-{
- pthread_t thread1, thread2;
- pthread_create( &thread1, NULL, &functionCount1, NULL);
- pthread_create( &thread2, NULL, &functionCount2, NULL);
- pthread_join( thread1, NULL);
- pthread_join( thread2, NULL);
- exit(0);
-}
 
 // Print odd numbers
-void *functionCount1()
+void *print_odd(void *arg)
 {
-  for(;;) {
-   // Lock mutex and then wait for signal to relase mutex
-   pthread_mutex_lock( &count_mutex );
-   if ( count % 2 != 0 ) {
-     pthread_cond_wait( &condition_var, &count_mutex );
-   }
-   count++;
-   printf("Counter value functionCount1: %d\n",count);
-   pthread_cond_signal( &condition_var );
-   if ( count >= COUNT_DONE ) {
-     pthread_mutex_unlock( &count_mutex );
-     return(NULL);
-   }
-   pthread_mutex_unlock( &count_mutex );
- }
+  int *arr_p = (int *)arg;
+  while(count < size)
+  {
+   	// Lock mutex and then wait for signal to relase mutex
+   	pthread_mutex_lock( &count_mutex );
+   	while( arr_p[count] % 2 != 0 ) 
+   	{ 
+     		pthread_cond_wait( &condition_var, &count_mutex );
+   	}
+   	count++;
+	printf("Array value print_odd: %d\n",arr_p[count]);
+       	pthread_mutex_unlock( &count_mutex );
+   	pthread_cond_signal( &condition_var );
+  }
+  pthread_exit(0);
 }
 
+
+
 // print even numbers
-void *functionCount2()
+void *print_even(void *arg)
 {
-  for(;;) {
-  // Lock mutex and then wait for signal to relase mutex
-  pthread_mutex_lock( &count_mutex );
-  if ( count % 2 == 0 ) {
-    pthread_cond_wait( &condition_var, &count_mutex );
+  int *arr_p = (int*)arg;
+  while(count < size)
+  {
+ 	 // Lock mutex and then wait for signal to relase mutex
+  	pthread_mutex_lock( &count_mutex );
+  	while( arr_p[count] % 2 == 0 )
+	{
+    	    pthread_cond_wait( &condition_var, &count_mutex );
+  	}
+  	count++;
+  	printf("Array Value print_even: %d\n", arr_p[count]);
+	pthread_mutex_unlock(&count_mutex);
+  	pthread_cond_signal( &condition_var );
   }
-  count++;
-  printf("Counter value functionCount2: %d\n",count);
-  pthread_cond_signal( &condition_var );
-  if( count >= COUNT_DONE ) {
-    pthread_mutex_unlock( &count_mutex );
-    return(NULL);
-  }
-  pthread_mutex_unlock( &count_mutex );
- }
+  pthread_exit(0);
 }
+
+
 
