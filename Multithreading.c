@@ -2,14 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*int average;
+/*
+int average;
 
 int size = 0;
 
 
 void *calcAvg(void *arg);
 int main(int argc, char *argv[]){
-  /* initialize an array of the integers to be passed */
+  //initialize an array of the integers to be passed 
   int *nums = (int*)malloc((argc - 1)*sizeof(int));
   int i = 1;
   for(i = 1; i < argc ; i++){
@@ -17,7 +18,7 @@ int main(int argc, char *argv[]){
     size++;
   }
 
-  /* Thread Identifier */
+  //Thread Identifier 
   pthread_t avgThread;
 
   pthread_create(&avgThread, NULL, calcAvg, (void*)nums);
