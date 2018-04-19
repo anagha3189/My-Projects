@@ -1,0 +1,17 @@
+2   62   61   20   91   28   63   74   30   13   64   69   64   108   105   
+Array value print_odd: 62
+Array value print_odd: 61
+Array Value print_even: 20
+Array value print_odd: 91
+Array Value print_even: 28
+Array value print_odd: 63
+Array Value print_even: 74
+Array value print_odd: 30
+Array value print_odd: 13
+Array Value print_even: 64
+Array value print_odd: 69
+Array Value print_even: 64
+Array value print_odd: 108
+Array value print_odd: 105
+Array Value print_even: 0
+Array value print_odd: 538976306
