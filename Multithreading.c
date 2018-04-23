@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include <pthread.h>
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -39,12 +40,12 @@ void *printfun1(void *ptr)
         while ((counter & 1) == 1)
             pthread_cond_wait(&even, &mutex);
 
-        printf("%d \n", counter);
+        printf("Even -> %d \n", counter);
         counter++;
         pthread_cond_signal(&odd);
         pthread_mutex_unlock(&mutex);
 
-        usleep( 1000000);
+        //usleep( 1000000);
     }
     return NULL;
 }
@@ -57,12 +58,12 @@ void *printfun2(void *ptr)
         while ((counter & 1) == 0)
             pthread_cond_wait(&odd, &mutex);
 
-        printf("%d \n", counter);
+        printf("Odd -> %d \n", counter);
         counter++;
         pthread_cond_signal(&even);
         pthread_mutex_unlock(&mutex);
 
-        usleep( 1000000);
+        //usleep( 1000000);
     }
     return NULL;
 }

@@ -82,13 +82,12 @@ void *print_even(void *arg)
   {
    	// Lock mutex and then wait for signal to relase mutex
    	pthread_mutex_lock( &count_mutex );
-   	while( arr_p[count] % 2 == 1 ) 
-   	{ 
-     		pthread_cond_wait( &odd, &count_mutex );
-	}
+	//Keep looping till the condition is odd 
+   	while( arr_p[count] % 2 == 1 )  
+     		pthread_cond_wait( &even, &count_mutex); //Waiting till even condition becomes true
 	printf("Array value print_even: %d\n",arr_p[count]);
         count++;
-   	pthread_cond_signal( &even );
+   	pthread_cond_signal( &odd);
 	pthread_mutex_unlock(&count_mutex);
   }
   pthread_exit(0);
@@ -104,13 +103,12 @@ void *print_odd(void *arg)
   {
  	 // Lock mutex and then wait for signal to relase mutex
   	pthread_mutex_lock( &count_mutex );
+	// Keep looping till condition is even
   	while( arr_p[count] % 2 == 0 )
-	{
-    	    	pthread_cond_wait( &even, &count_mutex ); 
-	} 		
+    	    	pthread_cond_wait( &odd, &count_mutex ); //waiting till odd becomes true		
 	printf("Array Value print_odd: %d\n", arr_p[count]);
 	count++;
-  	pthread_cond_signal(&odd);
+  	pthread_cond_signal(&even);
 	pthread_mutex_unlock(&count_mutex);
   }
   pthread_exit(0);
