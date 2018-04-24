@@ -37,15 +37,18 @@ void *printfun1(void *ptr)
     while(counter < 50)
     {
         pthread_mutex_lock(&mutex);
-        while ((counter & 1) == 1)
+        while ((counter & 1) == 1) 
             pthread_cond_wait(&even, &mutex);
 
         printf("Even -> %d \n", counter);
         counter++;
         pthread_cond_signal(&odd);
         pthread_mutex_unlock(&mutex);
+<<<<<<< HEAD
 
         //usleep( 1000000);
+=======
+>>>>>>> baeb3d035e0740884b60547fe278b5f6a0611291
     }
     return NULL;
 }
@@ -56,14 +59,21 @@ void *printfun2(void *ptr)
     {
         pthread_mutex_lock(&mutex);
         while ((counter & 1) == 0)
-            pthread_cond_wait(&odd, &mutex);
+            pthread_cond_wait(&even, &mutex);
 
         printf("Odd -> %d \n", counter);
         counter++;
-        pthread_cond_signal(&even);
+        pthread_cond_signal(&odd);
         pthread_mutex_unlock(&mutex);
+<<<<<<< HEAD
 
         //usleep( 1000000);
     }
     return NULL;
 }
+=======
+    }
+    return NULL;
+}
+
+>>>>>>> baeb3d035e0740884b60547fe278b5f6a0611291
