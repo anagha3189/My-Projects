@@ -44,11 +44,6 @@ void *printfun1(void *ptr)
         counter++;
         pthread_cond_signal(&odd);
         pthread_mutex_unlock(&mutex);
-<<<<<<< HEAD
-
-        //usleep( 1000000);
-=======
->>>>>>> baeb3d035e0740884b60547fe278b5f6a0611291
     }
     return NULL;
 }
@@ -65,15 +60,6 @@ void *printfun2(void *ptr)
         counter++;
         pthread_cond_signal(&odd);
         pthread_mutex_unlock(&mutex);
-<<<<<<< HEAD
-
-        //usleep( 1000000);
     }
     return NULL;
 }
-=======
-    }
-    return NULL;
-}
-
->>>>>>> baeb3d035e0740884b60547fe278b5f6a0611291
