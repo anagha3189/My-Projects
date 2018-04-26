@@ -9,8 +9,6 @@ using namespace std;
 
 // (Climbing stairs problem) -> Number of ways to get to TOP, 
 // if you are allowed to climb 1 to N steps at a time.
-
-
 int numberOfWaysTopHelper(int top , int max_step, vector<int>& numberOfWays)
 {
 	if(top <= 1)
@@ -75,24 +73,20 @@ int fewestNumberOfCoins(int amount, vector<int> &coins)
 /*************************************************************************************************/
 
 //(Soccer Game) -> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+int numberOfWaysFinalScore(int final_score , vector<int>& individual_scores)
+{
+	vector<vector<int>> numberOfWays(individual_scores.size() , vectr<int>(final_score+1 , 0));
+	for(int i = 0; i < individual_scores.size(); i++)
+	{	numberOfWays[i][0] = 1;
+		for(int j = 1; j <= final_score; j++)
+		{
+			without_this_play = i>=1 ? numberOfWays[i-1][j] : 0;
+			with_this_play = j>=individual_scores[i] = numberOfWays[i][j-individual_scores[i]] : 0;
+			numberOfWays[i][j] = with_this_play + without_this_play;
+		}
+	}
+	return numberOfWays.back().back();
+}
 
 
 /************************************************************************************************/
@@ -125,9 +119,38 @@ int numberOfWaysTraverse(int n , int m)
 
 /*******************************************************************************************************/
 
-//(Number of ways to Traverse 2D array Problem 2)
-//
-//
+//(Number of ways to Traverse 2D array Problem 2: ObstacleGrid)
+// Count the number of ways to go from top left corner to bottom right corner, 
+// if bottom move and right move is only allowed 
+
+int numberOfWaysTraverse(int x , int y, vector<vector<int>> &numberOfWays, vector<vector<int>> &ObstacleGrid)
+{
+	if(x == 0 && y == 0)
+	return 1;
+
+	if(numberOfWays[x][y] == 0)
+	{
+		if(ObstacleGrid[x][y]==0) 
+		{
+			int ways_right = y == 0 ? 0:numberOfWaysTraverse(x, y-1, numberOfWays, ObstacleGrid); 
+			int ways_bottom = x == 0? 0:numberOfWaysTraverse(x-1, y, numberOfWays, ObstacleGrid); 
+			numberOfWays[x][y] = ways_right + ways_bottom;
+		}
+	}
+	return numberOfWays[x][y];
+}
+
+
+int numberOfWaysTraverse(vector<vector<int>> &ObstacleGrid)
+{	
+	int m = ObstacleGrid.size();
+	int n = ObstacleGrid[0].size();
+	vector<vector<int>> numberOfWays(m, vector<int> (n, 0));
+	return numberOfWaysTraverseHelper(m-1, n-1, numberOfWays, ObstacleGrid);
+}
+
+
+/***********************************************************************************************************/
 
 
 
