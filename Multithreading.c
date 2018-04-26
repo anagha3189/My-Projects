@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include <pthread.h>
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -62,4 +63,3 @@ void *printfun2(void *ptr)
     }
     return NULL;
 }
-
