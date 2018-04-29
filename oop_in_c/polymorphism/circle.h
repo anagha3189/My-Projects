@@ -35,6 +35,6 @@ typedef struct {
 
 /* constructor */
 void Circle_ctor(Circle * const me, int16_t x, int16_t y,
-                 uint16_t rad);
+                 uint16_t rad, char *name);
 
 #endif /* CIRCLE_H */

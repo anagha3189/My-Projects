@@ -56,7 +56,6 @@ int count1()
     return x;
 }
 
-
 int main()
 {
     char a = fun();
@@ -81,6 +80,6 @@ int main()
     {
         printf("%d\n", count1());
     }
-    
+  
     return 0;
 }
