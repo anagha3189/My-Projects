@@ -3,30 +3,27 @@
 #include <stdlib.h>
 
 int average;
-
 int size = 0;
-
 
 void *calcAvg(void *arg);
 int main(int argc, char *argv[]){
   /* initialize an array of the integers to be passed */
   int *nums = (int*)malloc((argc - 1)*sizeof(int));
   int i = 1;
-  for(i = 1; i < argc ; i++){
+  for(i = 1; i < argc ; i++)
+  {
     nums[i-1] = atoi(argv[i]);
     size++;
   }
 
   /* Thread Identifier */
   pthread_t avgThread;
-
   pthread_create(&avgThread, NULL, calcAvg, (void*)nums);
-
   pthread_join(avgThread, NULL);
   printf("average = %d \n",average);
   free(nums);
-
 }
+
 void *calcAvg(void *arg){
   int *val_p = (int *) arg;
   int sum = 0;
